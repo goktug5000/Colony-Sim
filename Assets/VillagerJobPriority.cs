@@ -314,7 +314,11 @@ public class VillagerJobPriority : MonoBehaviour
             }
             else
             {
-                yield break;
+                preHaulingObj.GetComponent<BlockHolder>().whoIsHold.amount = preHaulingObj.GetComponent<BlockHolder>().whoIsHold.whoAmI.maxAmount;
+                haulingObj.GetComponent<BlockHolder>().whoIsHold.amount -= leftAmount;
+                haulingObj.GetComponent<BlockHolder>().someoneOnIt = false;
+                haulingObj = preHaulingObj;
+                
             }
             
         }
@@ -346,8 +350,7 @@ public class VillagerJobPriority : MonoBehaviour
                     
                     if (blockHolder.whoIsHold.whoAmI.name == haulingObj.GetComponent<BlockHolder>().whoIsHold.whoAmI.name)
                     {
-                        Debug.Log(collider.gameObject.name);
-                        if (!blockHolder.onHaul && !blockHolder.someoneOnIt)
+                        if (!blockHolder.onHaul && !blockHolder.someoneOnIt && !blockHolder.inPile)
                         {
                             StartCoroutine(haulJob(blockHolder.gameObject, haulingObj));
                             yield break;
@@ -366,11 +369,9 @@ public class VillagerJobPriority : MonoBehaviour
 
         GameObject myPile = lookForStockPile();
         myVillagerMove.moveToPoint(myPile.transform.position);//depoya git
-
         while (!myVillagerMove.anyPathRemaining())//gitmesini bekle
         {
-            Debug.Log("buraaa");
-            
+            yield return null;
         }
         if (godLevelOrder)
         {

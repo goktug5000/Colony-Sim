@@ -18,3 +18,4 @@ MonoBehaviour:
   myGameObj: {fileID: 7734631816204532424, guid: 647e5311736958546b9f8c450e4edff8, type: 3}
   myMaterialTypesEnum: 1
   kg: 5
+  maxAmount: 1

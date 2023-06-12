@@ -2544,6 +2544,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wood (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 3478157945092656714, guid: 8277b4ff4fa146e4ea7c818e7d147fd7, type: 3}
+      propertyPath: whoIsHold.amount
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3478157945092656715, guid: 8277b4ff4fa146e4ea7c818e7d147fd7, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -4828,6 +4832,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wood (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 3478157945092656714, guid: 8277b4ff4fa146e4ea7c818e7d147fd7, type: 3}
+      propertyPath: whoIsHold.amount
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3478157945092656715, guid: 8277b4ff4fa146e4ea7c818e7d147fd7, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -5134,6 +5142,10 @@ PrefabInstance:
     - target: {fileID: 3478157945092656712, guid: 8277b4ff4fa146e4ea7c818e7d147fd7, type: 3}
       propertyPath: m_Name
       value: wood (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3478157945092656714, guid: 8277b4ff4fa146e4ea7c818e7d147fd7, type: 3}
+      propertyPath: whoIsHold.amount
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3478157945092656715, guid: 8277b4ff4fa146e4ea7c818e7d147fd7, type: 3}
       propertyPath: m_RootOrder
@@ -11784,6 +11796,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wood (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 3478157945092656714, guid: 8277b4ff4fa146e4ea7c818e7d147fd7, type: 3}
+      propertyPath: whoIsHold.amount
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3478157945092656715, guid: 8277b4ff4fa146e4ea7c818e7d147fd7, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -13992,7 +14008,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myBlocks: []
-  sizeX: 2
+  sizeX: 1
   sizeZ: 1
   myObjsParent: {fileID: 56122585}
   myObjs: []
@@ -18465,6 +18481,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: wood
       objectReference: {fileID: 0}
+    - target: {fileID: 3478157945092656714, guid: 8277b4ff4fa146e4ea7c818e7d147fd7, type: 3}
+      propertyPath: whoIsHold.amount
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3478157945092656715, guid: 8277b4ff4fa146e4ea7c818e7d147fd7, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -18566,22 +18586,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7065809340940923441, guid: c4a84442b80a2b844a85f6660cee39da, type: 3}
-      propertyPath: myBlocks.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7065809340940923441, guid: c4a84442b80a2b844a85f6660cee39da, type: 3}
-      propertyPath: myBlocks.Array.data[0].amount
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 7065809340940923441, guid: c4a84442b80a2b844a85f6660cee39da, type: 3}
-      propertyPath: myBlocks.Array.data[1].amount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7065809340940923441, guid: c4a84442b80a2b844a85f6660cee39da, type: 3}
-      propertyPath: myBlocks.Array.data[1].whoAmI
-      value: 
-      objectReference: {fileID: 11400000, guid: 274a31f0b2f812b40b6f236b3c86cff7, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4a84442b80a2b844a85f6660cee39da, type: 3}
 --- !u!4 &8494695655410445192 stripped
