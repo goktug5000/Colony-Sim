@@ -390,7 +390,7 @@ public class VillagerJobPriority : MonoBehaviour
 
             yield break;
         }
-        Debug.Log("in pile");
+        //Debug.Log("in pile");
         myVillagerMove.haulThis(haulingObj, false);//objeyi taþýmayý býraktý
 
         myPile.GetComponent<stockPileCode>().addBlock(haulingObj.GetComponent<BlockHolder>());

@@ -25,8 +25,49 @@ public class stockPileCode : MonoBehaviour
 
     public void addBlock(BlockHolder BlockHolderr)
     {
+        foreach(GameObject myObj in myObjs)
+        {
+            if (myObj != null)
+            {
+                try
+                {
+                    BlockHolder myObjBlock = myObj.GetComponent<BlockHolder>();
+                    if (BlockHolderr.whoIsHold.whoAmI.name == myObjBlock.whoIsHold.whoAmI.name)
+                    {
+                        int leftAmount = myObjBlock.whoIsHold.whoAmI.maxAmount - myObjBlock.whoIsHold.amount;
+                        if (leftAmount != 0)
+                        {
+                            if (leftAmount >= BlockHolderr.whoIsHold.amount)
+                            {
+                                myObjBlock.whoIsHold.amount += BlockHolderr.whoIsHold.amount;
+                                Destroy(BlockHolderr.gameObject);
+                                return;
+                            }
+                            else
+                            {
+                                myObjBlock.whoIsHold.amount = myObjBlock.whoIsHold.whoAmI.maxAmount;
+                                BlockHolderr.whoIsHold.amount -= leftAmount;
+                                addBlock(BlockHolderr);
+                                return;
+                            }
+                        }
+                        
 
-        addToGameObj(BlockHolderr.gameObject);
+                    }
+                }
+                catch
+                {
+
+                }
+                
+            }
+            
+        }
+        if (BlockHolderr.whoIsHold.amount > 0)
+        {
+            addToGameObj(BlockHolderr.gameObject);
+        }
+        
         return;
         /*
         foreach (BlockHold myBlock in myBlocks)
