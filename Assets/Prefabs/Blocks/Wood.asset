@@ -17,3 +17,4 @@ MonoBehaviour:
   artWork: {fileID: 0}
   myGameObj: {fileID: 3478157945092656712, guid: 8277b4ff4fa146e4ea7c818e7d147fd7, type: 3}
   myMaterialTypesEnum: 1
+  kg: 2

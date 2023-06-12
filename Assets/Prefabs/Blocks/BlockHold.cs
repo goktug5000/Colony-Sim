@@ -10,8 +10,6 @@ public class BlockHold
 
     [SerializeField] public int amount;
 
-    [Header("Seed")]
-    [SerializeField] public mySeeds whoAmSeed;
 
     public BlockHold(BlockCode BlockCodee, int amountt)
     {
@@ -19,10 +17,5 @@ public class BlockHold
         amount = amountt;
 
     }
-    public BlockHold(mySeeds seedCodee, int amountt)
-    {
-        whoAmSeed = seedCodee;
-        amount = amountt;
 
-    }
 }

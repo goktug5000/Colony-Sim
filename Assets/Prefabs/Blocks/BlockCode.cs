@@ -14,13 +14,14 @@ public class BlockCode : ScriptableObject
     [SerializeField] public GameObject myGameObj;
     [SerializeField] private MaterialTypesEnum myMaterialTypesEnum;
 
-
+    [SerializeField] public float kg;
+    [SerializeField] public int maxAmount;
     private enum MaterialTypesEnum
     {
         
         Food,
         RawMaterial,
         ManuFactured,
-        Seed
+
     }
 }

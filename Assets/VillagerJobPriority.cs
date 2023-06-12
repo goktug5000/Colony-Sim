@@ -231,41 +231,17 @@ public class VillagerJobPriority : MonoBehaviour
         return enYakinObj;
 
     }
-    public GameObject lookForSeeds(mySeeds.SeedTypesEnum[] SeedTypesEnumToPlant)
-    {
-        BlockHolder[] blockHolders = FindObjectsOfType<BlockHolder>();
-        GameObject enYakinObj = null;
-
-        float distanceMin = Mathf.Infinity;
-        for(int seedDongusu = 0; seedDongusu < SeedTypesEnumToPlant.Length; seedDongusu++)
-        {
-            for (int i = 0; i < blockHolders.Length; i++)
-            {
-                if (blockHolders[i].onHaul == false && blockHolders[i].someoneOnIt == false && blockHolders[i].whoIsHold.whoAmSeed.mySeedTypesEnum == SeedTypesEnumToPlant[seedDongusu])
-                {
-                    float distance = Vector3.Distance(this.transform.position, blockHolders[i].transform.position);
-                    //Debug.Log("Distance between " + this.name + " and " + blockHolders[i].name + " is " + distance + " units.");
-                    if (distance < distanceMin)
-                    {
-                        distanceMin = distance;
-                        enYakinObj = blockHolders[i].gameObject;
-                    }
-                }
-
-            }
-        }
-        
-        if (enYakinObj != null)
-        {
-            StartCoroutine(haulJob(enYakinObj));
-        }
-        return enYakinObj;
-    }
-
 
     IEnumerator haulJob(GameObject haulingObj)
     {
+        StartCoroutine(haulJob(haulingObj, null));
+        yield break;
+    }
+
+    IEnumerator haulJob(GameObject haulingObj,GameObject preHaulingObj)
+    {
         haulingObj.GetComponent<BlockHolder>().someoneOnIt = true;
+
         onDuty = true;
         if (godLevelOrder)
         {
@@ -274,6 +250,14 @@ public class VillagerJobPriority : MonoBehaviour
             haulingObj.GetComponent<BlockHolder>().onHaul = false;
             haulingObj.GetComponent<BlockHolder>().someoneOnIt = false;
             myVillagerMove.haulThis(haulingObj, false);//objeyi taþýmayý býraktý
+            if (preHaulingObj != null)
+            {
+                preHaulingObj.GetComponent<BlockHolder>().inPile = false;
+                preHaulingObj.GetComponent<BlockHolder>().onHaul = false;
+                preHaulingObj.GetComponent<BlockHolder>().someoneOnIt = false;
+                myVillagerMove.haulThis(preHaulingObj, false);//objeyi taþýmayý býraktý
+            }
+
             yield break;
         }
         //Debug.Log("haul started");
@@ -281,7 +265,23 @@ public class VillagerJobPriority : MonoBehaviour
 
         while (!myVillagerMove.anyPathRemaining())//gitmesini bekle
         {
-            
+            if (godLevelOrder)
+            {
+                Debug.Log("god stops");
+                haulingObj.GetComponent<BlockHolder>().inPile = false;
+                haulingObj.GetComponent<BlockHolder>().onHaul = false;
+                haulingObj.GetComponent<BlockHolder>().someoneOnIt = false;
+                myVillagerMove.haulThis(haulingObj, false);//objeyi taþýmayý býraktý
+                if (preHaulingObj != null)
+                {
+                    preHaulingObj.GetComponent<BlockHolder>().inPile = false;
+                    preHaulingObj.GetComponent<BlockHolder>().onHaul = false;
+                    preHaulingObj.GetComponent<BlockHolder>().someoneOnIt = false;
+                    myVillagerMove.haulThis(preHaulingObj, false);//objeyi taþýmayý býraktý
+                }
+
+                yield break;
+            }
             yield return null;
             //((Vector3.Distance(this.transform.position, haulingObj.transform.position))<0.7f)
         }
@@ -292,16 +292,76 @@ public class VillagerJobPriority : MonoBehaviour
             haulingObj.GetComponent<BlockHolder>().onHaul = false;
             haulingObj.GetComponent<BlockHolder>().someoneOnIt = false;
             myVillagerMove.haulThis(haulingObj, false);//objeyi taþýmayý býraktý
+            preHaulingObj.GetComponent<BlockHolder>().inPile = false;
+            preHaulingObj.GetComponent<BlockHolder>().onHaul = false;
+            preHaulingObj.GetComponent<BlockHolder>().someoneOnIt = false;
+            myVillagerMove.haulThis(preHaulingObj, false);//objeyi taþýmayý býraktý
             yield break;
         }
         //Debug.Log("in position");
-
-
-
         yield return new WaitForSeconds(1.0f);//1sn bekle
 
+
+        //2023_06_12
+        if (preHaulingObj != null)
+        {
+            int leftAmount = preHaulingObj.GetComponent<BlockHolder>().whoIsHold.whoAmI.maxAmount-preHaulingObj.GetComponent<BlockHolder>().whoIsHold.amount;
+            
+            if(leftAmount >= haulingObj.GetComponent<BlockHolder>().whoIsHold.amount)
+            {
+                Destroy(preHaulingObj);
+                haulingObj.GetComponent<BlockHolder>().whoIsHold.amount += preHaulingObj.GetComponent<BlockHolder>().whoIsHold.amount;
+            }
+            else
+            {
+                yield break;
+            }
+            
+        }
+        //!2023_06_12
+
         haulingObj.GetComponent<BlockHolder>().onHaul = true;//objeyi taþýnýyo haline getirdi
-        myVillagerMove.haulThis(haulingObj,true);//objeyi taþýmaya baþladý
+        myVillagerMove.haulThis(haulingObj, true);//objeyi taþýmaya baþladý
+
+
+
+
+        //2023_06_12
+
+        //aldýðýmdan baþka var mý diye kontrol et
+        int leftAmountt = haulingObj.GetComponent<BlockHolder>().whoIsHold.whoAmI.maxAmount - haulingObj.GetComponent<BlockHolder>().whoIsHold.amount;
+        if (leftAmountt > 0)
+        {
+            
+            float lookingRadius = 3;
+            Collider[] colliders = Physics.OverlapSphere(haulingObj.transform.position, lookingRadius);
+            foreach (Collider collider in colliders)
+            {
+
+                
+                BlockHolder blockHolder = collider.gameObject.GetComponent<BlockHolder>();
+
+                if (blockHolder != null)
+                {
+                    
+                    if (blockHolder.whoIsHold.whoAmI.name == haulingObj.GetComponent<BlockHolder>().whoIsHold.whoAmI.name)
+                    {
+                        Debug.Log(collider.gameObject.name);
+                        if (!blockHolder.onHaul && !blockHolder.someoneOnIt)
+                        {
+                            StartCoroutine(haulJob(blockHolder.gameObject, haulingObj));
+                            yield break;
+                        }
+                    }
+
+                }
+
+            }
+        }
+        //!2023_06_12
+
+
+
 
 
         GameObject myPile = lookForStockPile();
@@ -309,7 +369,8 @@ public class VillagerJobPriority : MonoBehaviour
 
         while (!myVillagerMove.anyPathRemaining())//gitmesini bekle
         {
-            yield return null;
+            Debug.Log("buraaa");
+            
         }
         if (godLevelOrder)
         {
@@ -318,6 +379,14 @@ public class VillagerJobPriority : MonoBehaviour
             haulingObj.GetComponent<BlockHolder>().onHaul = false;
             haulingObj.GetComponent<BlockHolder>().someoneOnIt = false;
             myVillagerMove.haulThis(haulingObj, false);//objeyi taþýmayý býraktý
+            if (preHaulingObj != null)
+            {
+                preHaulingObj.GetComponent<BlockHolder>().inPile = false;
+                preHaulingObj.GetComponent<BlockHolder>().onHaul = false;
+                preHaulingObj.GetComponent<BlockHolder>().someoneOnIt = false;
+                myVillagerMove.haulThis(preHaulingObj, false);//objeyi taþýmayý býraktý
+            }
+
             yield break;
         }
         Debug.Log("in pile");
@@ -332,6 +401,10 @@ public class VillagerJobPriority : MonoBehaviour
 
         onDuty = false;
     }
+
+
+
+
     IEnumerator lumberJackJob(GameObject cuttingTreeObj)
     {
 
