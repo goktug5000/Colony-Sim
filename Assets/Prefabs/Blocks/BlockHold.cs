@@ -10,7 +10,10 @@ public class BlockHold
 
     [SerializeField] public int amount;
 
-
+    public BlockCode getWhoAmI()
+    {
+        return whoAmI;
+    }
     public BlockHold(BlockCode BlockCodee, int amountt)
     {
         whoAmI = BlockCodee;

@@ -2,13 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using TMPro;
 
 [System.Serializable]
 public class RootStockPileCode : MonoBehaviour
 {
 
-    [SerializeField] BlockHold[] allBlocks = new BlockHold[0];
-
+    [SerializeField] private BlockHold[] allBlocks = new BlockHold[0];
+    [SerializeField] private BlockHold allBloc;
+    [SerializeField] private TextMeshProUGUI depomuz;
 
     // Start is called before the first frame update
     void Start()
@@ -19,14 +21,11 @@ public class RootStockPileCode : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKey(KeyCode.E) && Input.GetKeyDown(KeyCode.Q))
         {
             forcedRefindAllStockPileOwns();
         }
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            allBlocks = new BlockHold[0];
-        }
+
     }
     public void forcedRefindAllStockPileOwns()
     {
@@ -40,6 +39,7 @@ public class RootStockPileCode : MonoBehaviour
                 {
                     if (myObj != null)
                     {
+                        bool foreachBool = false;
                         foreach(BlockHold allBlock in allBlocks)
                         {
                             if (allBlocks != null)
@@ -50,7 +50,8 @@ public class RootStockPileCode : MonoBehaviour
                                     if (myObj.GetComponent<BlockHolder>().whoIsHold.whoAmI.name == allBlock.whoAmI.name)
                                     {
                                         allBlock.amount += myObj.GetComponent<BlockHolder>().whoIsHold.amount;
-                                        return;
+                                        foreachBool = true;
+                                        break;
                                     }
                                     else
                                     {
@@ -64,38 +65,39 @@ public class RootStockPileCode : MonoBehaviour
                             }
                             
                         }
-
-                        reSizeAndAddNew(myObj);
+                        if (!foreachBool)
+                        {
+                            reSizeAndAddNew(myObj);
+                        }
                         
-
-
+                        
                     }
+
+
                 }
             }
             
         }
-
-
+        
+        string dildozer = "";
         foreach(BlockHold allBlock in allBlocks)
         {
             if (allBlock != null)
             {
-                Debug.Log(allBlock.whoAmI.name + ": " + allBlock.amount);
 
+                dildozer+=(allBlock.whoAmI.name + ": " + allBlock.amount);
+                dildozer += "\n";
             }
         }
+        //Debug.Log(dildozer);
+        depomuz.text = dildozer;
+        
     }
     void reSizeAndAddNew(GameObject objToAdd)
     {
-        try
-        {
-            Array.Resize(ref allBlocks, allBlocks.Length + 1);
-            allBlocks[allBlocks.Length - 1] = new BlockHold(objToAdd.GetComponent<BlockHold>().whoAmI, objToAdd.GetComponent<BlockHold>().amount);
-        }
-        catch
-        {
+        Array.Resize(ref allBlocks, allBlocks.Length + 1);
+        allBlocks[allBlocks.Length - 1] = new BlockHold(objToAdd.GetComponent<BlockHolder>().whoIsHold.whoAmI, objToAdd.GetComponent<BlockHolder>().whoIsHold.amount);
 
-        }
-        
     }
+
 }

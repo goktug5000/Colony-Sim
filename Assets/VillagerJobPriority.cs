@@ -135,7 +135,7 @@ public class VillagerJobPriority : MonoBehaviour
         {
             if (blockHolders[i].inPile == false && blockHolders[i].onHaul == false && blockHolders[i].someoneOnIt == false)
             {
-                float distance = Vector3.Distance(this.transform.position, blockHolders[i].transform.position);
+                float distance = myVillagerMove.CalculatePathDistance(blockHolders[i].transform.position);
                 //Debug.Log("Distance between " + this.name + " and " + blockHolders[i].name + " is " + distance + " units.");
                 if (distance < distanceMin)
                 {
@@ -165,7 +165,7 @@ public class VillagerJobPriority : MonoBehaviour
         {
             if (TreeCodes[i].someoneOnIt == false)
             {
-                float distance = Vector3.Distance(this.transform.position, TreeCodes[i].transform.position);
+                float distance = myVillagerMove.CalculatePathDistance(TreeCodes[i].transform.position);
                 //Debug.Log("Distance between " + this.name + " and " + blockHolders[i].name + " is " + distance + " units.");
                 if (distance < distanceMin)
                 {
@@ -192,8 +192,8 @@ public class VillagerJobPriority : MonoBehaviour
         float distanceMin = Mathf.Infinity;
         for (int i = 0; i < stockPileCodes.Length; i++)
         {
-
-            float distance = Vector3.Distance(this.transform.position, stockPileCodes[i].gameObject.transform.position);
+            
+            float distance = myVillagerMove.CalculatePathDistance(stockPileCodes[i].gameObject.transform.position);
             if (distance < distanceMin)
             {
                 distanceMin = distance;
@@ -214,8 +214,7 @@ public class VillagerJobPriority : MonoBehaviour
         float distanceMin = Mathf.Infinity;
         for (int i = 0; i < farmPileCodes.Length; i++)
         {
-
-            float distance = Vector3.Distance(this.transform.position, farmPileCodes[i].gameObject.transform.position);
+            float distance = myVillagerMove.CalculatePathDistance(farmPileCodes[i].gameObject.transform.position);
             if (distance < distanceMin)
             {
                 distanceMin = distance;
